@@ -3,8 +3,8 @@ import argparse
 import numpy as np
 from PIL import Image
 
-gscale1 = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. " # 70 levels of gray
-gscale2 = "@%#*+=-:. "         #10 levels of gray
+gscale1 = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,\"^`'. "  # 70 levels of gray
+gscale2 = "@%#*+=-:. "  # 10 levels of gray
 
 
 def getAverageLuminance(image):
@@ -12,7 +12,7 @@ def getAverageLuminance(image):
 
     w, h = im.shape
 
-    return np.average(im.reshape(w*h))
+    return np.average(im.reshape(w * h))
 
 
 def convertImageToAscii(filename, cols, scale, moreLevels):
@@ -22,11 +22,11 @@ def convertImageToAscii(filename, cols, scale, moreLevels):
 
     W, H = image.size[0], image.size[1]
 
-    w = W/cols
+    w = W / cols
 
-    h = w/scale
+    h = w / scale
 
-    rows = int(H/h)
+    rows = int(H / h)
 
     if cols > W or rows > H:
         print('Image too small for specified cols')
@@ -35,19 +35,19 @@ def convertImageToAscii(filename, cols, scale, moreLevels):
     converted = []
 
     for j in range(rows):
-        y1 = int(j*h)
-        y2 = int((j+1)*h)
+        y1 = int(j * h)
+        y2 = int((j + 1) * h)
 
-        if j == rows-1:
+        if j == rows - 1:
             y2 = H
 
         converted.append("")
 
         for i in range(cols):
-            x1 = int(i*w)
-            x2 = int((i+1)*w)
+            x1 = int(i * w)
+            x2 = int((i + 1) * w)
 
-            if i == cols-1:
+            if i == cols - 1:
                 x2 = W
 
             img = image.crop((x1, y1, x2, y2))
@@ -55,9 +55,9 @@ def convertImageToAscii(filename, cols, scale, moreLevels):
             avg = int(getAverageLuminance(img))
 
             if moreLevels:
-                grayscalevalue = gscale1[int((avg*69)/255)]
+                grayscalevalue = gscale1[int((avg * 69) / 255)]
             else:
-                grayscalevalue = gscale2[int((avg*9)/255)]
+                grayscalevalue = gscale2[int((avg * 9) / 255)]
 
             converted[j] += grayscalevalue
 
